@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-surface-0 text-text-primary;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  ::selection {
+    background: rgba(124, 111, 255, 0.3);
+    color: #f0f0f5;
+  }
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-[1140px] px-5 sm:px-8;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-white
+      shadow-glow-sm transition-all duration-200
+      hover:bg-accent-dim hover:shadow-glow-md hover:-translate-y-px
+      active:translate-y-0 active:shadow-none
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-xl border border-border-soft bg-surface-2 px-6 py-3 text-sm font-medium text-text-primary
+      transition-all duration-200
+      hover:border-border-medium hover:bg-surface-3 hover:-translate-y-px
+      active:translate-y-0
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0;
+  }
+
+  .card {
+    @apply rounded-2xl border border-border-subtle bg-surface-1 shadow-card
+      transition-all duration-200
+      hover:border-border-soft hover:shadow-card-hover;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-border-subtle bg-surface-2 px-3 py-1 text-xs font-medium text-text-secondary;
+  }
+
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-widest text-accent;
+  }
+
+  .section-heading {
+    @apply text-2xl font-semibold text-text-primary sm:text-3xl;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+}
+
+/* Subtle top-of-page radial glow */
+.hero-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 111, 255, 0.18) 0%, transparent 70%);
+}
+
+/* Step connector line */
+.step-line::after {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: calc(50% + 24px);
+  width: calc(100% - 48px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(124,111,255,0.3), rgba(124,111,255,0.05));
+}
