@@ -1,5 +1,5 @@
-import { ShieldCheck } from 'lucide-react'
-import ComingSoonButton from './ComingSoonButton'
+import { Download, ShieldCheck } from 'lucide-react'
+import { DOWNLOAD_URL } from '../data/siteContent'
 
 export default function DownloadSection() {
   return (
@@ -23,7 +23,10 @@ export default function DownloadSection() {
               and start recording without touching your keyboard.
             </p>
 
-            <ComingSoonButton size="lg" />
+            <a href={DOWNLOAD_URL} className="btn-primary text-base px-8 py-3.5">
+              <Download size={18} />
+              Download for macOS
+            </a>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-text-muted">
               <span className="flex items-center gap-1.5">

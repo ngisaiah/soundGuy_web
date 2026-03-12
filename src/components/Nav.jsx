@@ -1,4 +1,5 @@
-import ComingSoonButton from './ComingSoonButton'
+import { Download } from 'lucide-react'
+import { DOWNLOAD_URL } from '../data/siteContent'
 
 const links = [
   { label: 'How it works', href: '#how-it-works' },
@@ -33,7 +34,10 @@ export default function Nav() {
           ))}
         </nav>
 
-        <ComingSoonButton size="sm" />
+        <a href={DOWNLOAD_URL} className="btn-primary py-2 text-xs">
+          <Download size={14} />
+          Download
+        </a>
       </div>
     </header>
   )

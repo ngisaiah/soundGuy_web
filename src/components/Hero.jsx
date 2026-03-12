@@ -1,5 +1,5 @@
-import { ArrowRight, Wifi, Lock, Apple } from 'lucide-react'
-import ComingSoonButton from './ComingSoonButton'
+import { Download, ArrowRight, Wifi, Lock, Apple } from 'lucide-react'
+import { DOWNLOAD_URL } from '../data/siteContent'
 
 const trustBadges = [
   { icon: Wifi,  label: 'Runs fully offline' },
@@ -57,7 +57,10 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">
-              <ComingSoonButton />
+              <a href={DOWNLOAD_URL} className="btn-primary">
+                <Download size={16} />
+                Download for macOS
+              </a>
               <a href="#setup" className="btn-secondary">
                 View setup
                 <ArrowRight size={15} />

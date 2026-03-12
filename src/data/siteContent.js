@@ -1,5 +1,5 @@
 // To swap in the real DMG download URL, update DOWNLOAD_URL below.
-export const DOWNLOAD_URL = 'https://example.com/soundguy.dmg'
+export const DOWNLOAD_URL = 'https://github.com/ngisaiah/soundGuy/releases/download/v1.0.0/SoundGuy.dmg'
 
 export const steps = [
   {
