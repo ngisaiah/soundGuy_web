@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { X, Loader } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-export default function AuthModal({ onClose, onSuccess }) {
-  const [mode, setMode] = useState('signin') // 'signin' | 'signup'
+export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }) {
+  const [mode, setMode] = useState(initialMode) // 'signin' | 'signup' | 'forgot'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
@@ -26,6 +26,23 @@ export default function AuthModal({ onClose, onSuccess }) {
         onSuccess?.()
         onClose()
       }
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handleForgotPassword(e) {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      })
+      if (error) throw error
+      setCheckEmail(true)
     } catch (err) {
       setError(err.message)
     } finally {
@@ -70,10 +87,57 @@ export default function AuthModal({ onClose, onSuccess }) {
           <div className="text-center py-4">
             <p className="section-label mb-3">Check your email</p>
             <p className="text-text-secondary text-sm leading-relaxed">
-              We sent a confirmation link to <span className="text-text-primary">{email}</span>.
-              Click the link to finish signing up.
+              {mode === 'forgot'
+                ? <>We sent a password reset link to <span className="text-text-primary">{email}</span>.</>
+                : <>We sent a confirmation link to <span className="text-text-primary">{email}</span>. Click the link to finish signing up.</>
+              }
             </p>
+            {mode === 'forgot' && (
+              <button
+                onClick={() => { setMode('signin'); setCheckEmail(false); setEmail('') }}
+                className="mt-4 text-xs text-accent hover:underline underline-offset-2"
+              >
+                Back to sign in
+              </button>
+            )}
           </div>
+        ) : mode === 'forgot' ? (
+          <>
+            <p className="section-label mb-1">Reset password</p>
+            <h2 className="text-xl font-bold text-text-primary mb-6">Forgot your password?</h2>
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-text-secondary mb-1.5">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-xl border border-border-soft bg-surface-2 px-3.5 py-2.5 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  placeholder="you@example.com"
+                />
+              </div>
+              {error && (
+                <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-400">{error}</p>
+              )}
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary w-full justify-center py-2.5 disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loading && <Loader size={14} className="animate-spin" />}
+                Send reset link
+              </button>
+            </form>
+            <p className="mt-5 text-center text-xs text-text-muted">
+              <button
+                onClick={() => { setMode('signin'); setError(null) }}
+                className="text-accent underline-offset-2 hover:underline"
+              >
+                Back to sign in
+              </button>
+            </p>
+          </>
         ) : (
           <>
             <p className="section-label mb-1">
@@ -123,9 +187,18 @@ export default function AuthModal({ onClose, onSuccess }) {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-text-secondary mb-1.5">
-                  Password
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-xs font-medium text-text-secondary">Password</label>
+                  {mode === 'signin' && (
+                    <button
+                      type="button"
+                      onClick={() => { setMode('forgot'); setError(null) }}
+                      className="text-xs text-text-muted hover:text-accent transition-colors"
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
                 <input
                   type="password"
                   required
