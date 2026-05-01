@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import HowItWorks from './components/HowItWorks'
@@ -12,6 +12,22 @@ import BackgroundCanvas from './components/BackgroundCanvas'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import AuthCallback from './components/AuthCallback'
 import ResetPassword from './components/ResetPassword'
+import AuthModal from './components/AuthModal'
+
+// Opens the auth modal in forgot-password mode when ?auth=forgot is in the URL (deeplink from macOS app)
+function ForgotPasswordGate() {
+  const [open, setOpen] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('auth') === 'forgot'
+  })
+
+  useEffect(() => {
+    if (open) window.history.replaceState({}, '', window.location.pathname)
+  }, [])
+
+  if (!open) return null
+  return <AuthModal initialMode="forgot" onClose={() => setOpen(false)} onSuccess={() => setOpen(false)} />
+}
 
 // Handles ?checkout=success redirect from Stripe — refreshes license state
 function CheckoutSuccessHandler() {
@@ -53,6 +69,7 @@ export default function App() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Nav />
         <main>
+          <ForgotPasswordGate />
           <CheckoutSuccessHandler />
           <Hero />
           <HowItWorks />
