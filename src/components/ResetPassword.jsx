@@ -11,16 +11,8 @@ export default function ResetPassword() {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setStatus('ready')
-      }
+      if (event === 'PASSWORD_RECOVERY') setStatus('ready')
     })
-
-    // Fallback: if the session is already active (e.g. page refreshed)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setStatus('ready')
-    })
-
     return () => subscription.unsubscribe()
   }, [])
 
