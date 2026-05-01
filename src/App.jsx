@@ -10,6 +10,7 @@ import DownloadSection from './components/DownloadSection'
 import Footer from './components/Footer'
 import BackgroundCanvas from './components/BackgroundCanvas'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
+import AuthCallback from './components/AuthCallback'
 
 // Handles ?checkout=success redirect from Stripe — refreshes license state
 function CheckoutSuccessHandler() {
@@ -29,6 +30,10 @@ function CheckoutSuccessHandler() {
 }
 
 export default function App() {
+  if (window.location.pathname === '/auth/callback') {
+    return <AuthCallback />
+  }
+
   return (
     <AuthProvider>
       <BackgroundCanvas />
