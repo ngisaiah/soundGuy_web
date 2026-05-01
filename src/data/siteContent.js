@@ -1,30 +1,36 @@
 // To swap in the real DMG download URL, update DOWNLOAD_URL below.
-export const DOWNLOAD_URL = 'https://github.com/ngisaiah/soundGuy/releases/download/v1.0.0/SoundGuy.dmg'
+export const DOWNLOAD_URL = 'https://github.com/ngisaiah/soundGuy/releases/download/V1.1.0/SoundGuy.dmg'
 
 export const steps = [
   {
     number: '01',
     label: 'Say "SoundGuy"',
-    description: 'The wake word wakes the app from standby. No button press needed.',
+    description: 'Wake the app without touching anything.',
   },
   {
     number: '02',
     label: 'Wait for the beep',
-    description: 'A short confirmation tone tells you the app is ready for your command.',
+    description: 'A short confirmation tone tells you SoundGuy is ready.',
   },
   {
     number: '03',
-    label: 'Speak a command',
-    description: 'Say "record", "stop", "undo" — any command mapped to a Logic Pro X shortcut.',
+    label: 'Say a recording command',
+    description: 'Say "record", "stop", "play", or "undo" while staying at the mic.',
   },
   {
     number: '04',
-    label: 'Logic Pro responds instantly',
-    description: 'SoundGuy injects the keyboard shortcut directly into Logic Pro X. No cloud round-trip.',
+    label: 'Keep recording',
+    description: 'Logic responds instantly, so you can stay focused on the next take.',
   },
 ]
 
 export const features = [
+  {
+    icon: 'Radio',
+    title: 'Hands-free recording control',
+    description:
+      'Record, stop, play, loop, and undo without walking back to your keyboard.',
+  },
   {
     icon: 'WifiOff',
     title: 'Offline by design',
@@ -35,19 +41,19 @@ export const features = [
     icon: 'Mic',
     title: 'Wake word detection',
     description:
-      'Say "SoundGuy" to activate. The app listens only for the wake word when idle, keeping CPU usage minimal.',
+      'Say "SoundGuy", wait for the beep, then control your session from the mic.',
   },
   {
     icon: 'Zap',
     title: 'Fast command recognition',
     description:
-      'Local inference means sub-second response times. No waiting for a server — the shortcut fires as soon as you finish speaking.',
+      'Local recognition keeps commands fast, reliable, and free from cloud delay.',
   },
   {
     icon: 'Keyboard',
-    title: 'Logic Pro X shortcuts',
+    title: 'Logic Pro shortcuts',
     description:
-      'Built specifically for Logic Pro X. Voice commands map directly to Logic\'s keyboard shortcuts — record, stop, loop, undo, and more.',
+      'SoundGuy maps your voice commands to real Logic Pro shortcuts for recording, playback, looping, undo, and track creation.',
   },
 ]
 
@@ -55,7 +61,7 @@ export const setupSteps = [
   {
     step: 1,
     title: 'Download SoundGuy',
-    description: 'Grab the .dmg from this page. The build is Apple-notarized and safe to open.',
+    description: 'Grab the .dmg from the pricing section. The build is Apple-notarized and safe to open.',
   },
   {
     step: 2,
@@ -86,7 +92,7 @@ export const setupSteps = [
   },
   {
     step: 7,
-    title: 'Start speaking',
-    description: 'Say "SoundGuy", wait for the beep, then speak your first command.',
+    title: 'Start recording hands-free',
+    description: 'Say "SoundGuy", wait for the beep, then control your session without leaving the mic.',
   },
 ]

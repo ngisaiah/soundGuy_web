@@ -5,8 +5,8 @@ export default function HowItWorks() {
     <section id="how-it-works" className="py-24">
       <div className="container-site">
         <div className="text-center mb-14">
-          <p className="section-label mb-3">How it works</p>
-          <h2 className="section-heading">Four steps, zero friction.</h2>
+          <p className="section-label mb-3">How you record hands-free</p>
+          <h2 className="section-heading">From mic to take — without touching your keyboard.</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

@@ -19,11 +19,11 @@ export default function DownloadSection() {
           <div className="relative">
             <p className="section-label mb-4">Download</p>
             <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mb-4 tracking-tight">
-              Ready to go hands-free?
+              Start recording without leaving the mic.
             </h2>
             <p className="text-text-secondary text-base max-w-md mx-auto mb-9 leading-relaxed">
-              Download SoundGuy, drop it in your Applications folder, grant two permissions,
-              and start recording without touching your keyboard.
+              Download SoundGuy, grant two permissions, and control Logic Pro from the mic
+              during your next recording session.
             </p>
 
             {hasAccess ? (

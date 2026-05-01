@@ -7,7 +7,7 @@ export default function SetupSteps() {
       <div className="container-site">
         <div className="text-center mb-14">
           <p className="section-label mb-3">Getting started</p>
-          <h2 className="section-heading">Up and running in minutes.</h2>
+          <h2 className="section-heading">Start recording hands-free in minutes.</h2>
           <p className="mt-3 text-text-secondary text-sm max-w-md mx-auto">
             SoundGuy requires two macOS permissions to work. Here's exactly how to set everything up.
           </p>

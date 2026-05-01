@@ -5,10 +5,10 @@ export default function CommandsTable() {
     <section id="commands" className="py-24">
       <div className="container-site">
         <div className="text-center mb-14">
-          <p className="section-label mb-3">Voice commands</p>
-          <h2 className="section-heading">Speak. SoundGuy listens.</h2>
+          <p className="section-label mb-3">What you can say</p>
+          <h2 className="section-heading">Simple commands for solo recording sessions.</h2>
           <p className="mt-3 text-text-secondary text-sm max-w-md mx-auto">
-            These built-in commands map to common DAW actions. You can add your own in the app.
+            These are the commands you'll use most while recording yourself in Logic Pro.
           </p>
         </div>
 

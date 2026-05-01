@@ -1,7 +1,7 @@
-import { WifiOff, Mic, Zap, Keyboard } from 'lucide-react'
+import { WifiOff, Mic, Zap, Keyboard, Radio } from 'lucide-react'
 import { features } from '../data/siteContent'
 
-const iconMap = { WifiOff, Mic, Zap, Keyboard }
+const iconMap = { WifiOff, Mic, Zap, Keyboard, Radio }
 
 export default function Features() {
   return (
@@ -9,7 +9,7 @@ export default function Features() {
       <div className="container-site">
         <div className="text-center mb-14">
           <p className="section-label mb-3">Features</p>
-          <h2 className="section-heading">Built for real recording sessions.</h2>
+          <h2 className="section-heading">Built for recording yourself.</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

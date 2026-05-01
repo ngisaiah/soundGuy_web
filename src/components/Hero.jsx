@@ -1,5 +1,4 @@
-import { Download, ArrowRight, Wifi, Lock, Apple } from 'lucide-react'
-import { DOWNLOAD_URL } from '../data/siteContent'
+import { ArrowRight, Wifi, Lock, Apple } from 'lucide-react'
 
 const trustBadges = [
   { icon: Wifi,  label: 'Runs fully offline' },
@@ -42,24 +41,25 @@ export default function Hero() {
           <div className="max-w-xl">
             <div className="pill mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              Voice control for Logic Pro X
+              Built for solo artists recording themselves
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold leading-[1.12] tracking-tight text-text-primary mb-5">
-              Control Logic Pro X
+              Stop walking back to your keyboard
               <br />
-              <span className="text-accent">hands-free.</span>
+              <span className="text-accent">between takes.</span>
             </h1>
 
-            <p className="text-lg text-text-secondary leading-relaxed mb-8 max-w-md">
-              Say "SoundGuy" and speak a command. The app triggers the matching Logic Pro X
-              keyboard shortcut instantly — fully offline, no cloud, no latency.
+            <p className="text-lg text-text-secondary leading-relaxed mb-3 max-w-md">
+              Record, stop, and redo takes in Logic Pro — without leaving the mic.
+            </p>
+            <p className="text-sm text-text-muted leading-relaxed mb-8 max-w-md">
+              Built for solo artists recording themselves.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">
-              <a href={DOWNLOAD_URL} className="btn-primary">
-                <Download size={16} />
-                Download for macOS
+              <a href="#pricing" className="btn-primary">
+                Get SoundGuy — $19.99
               </a>
               <a href="#setup" className="btn-secondary">
                 View setup

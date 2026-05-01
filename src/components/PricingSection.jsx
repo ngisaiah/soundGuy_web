@@ -5,10 +5,11 @@ import AuthModal from './AuthModal'
 import { DOWNLOAD_URL } from '../data/siteContent'
 
 const includes = [
-  { icon: Mic,      text: 'Wake-word detection ("SoundGuy")' },
-  { icon: Zap,      text: 'Sub-second, fully offline recognition' },
-  { icon: Keyboard, text: 'All Logic Pro X voice commands' },
-  { icon: WifiOff,  text: 'No subscription — yours forever' },
+  { icon: Mic,      text: 'Hands-free recording control for Logic Pro' },
+  { icon: Zap,      text: 'Wake-word detection ("SoundGuy")' },
+  { icon: WifiOff,  text: 'Sub-second, fully offline recognition' },
+  { icon: Keyboard, text: 'All built-in recording commands' },
+  { icon: Check,    text: 'No subscription — yours forever' },
 ]
 
 export default function PricingSection() {
@@ -71,9 +72,9 @@ export default function PricingSection() {
       <div className="container-site">
         <div className="text-center mb-12">
           <p className="section-label mb-3">Pricing</p>
-          <h2 className="section-heading">Own it for life</h2>
+          <h2 className="section-heading">Pay once. Record hands-free forever.</h2>
           <p className="mt-3 text-text-secondary text-base max-w-sm mx-auto leading-relaxed">
-            One purchase. No subscription. Use it forever.
+            One purchase. No subscription. Built for solo artists who want to stay in the flow.
           </p>
         </div>
 
