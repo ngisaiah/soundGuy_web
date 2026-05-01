@@ -33,6 +33,24 @@ export default function AuthModal({ onClose, onSuccess }) {
     }
   }
 
+  async function handleGoogleSignIn() {
+    setError(null)
+    setLoading(true)
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin,
+        },
+      })
+      if (error) throw error
+    } catch (err) {
+      setError(err.message)
+      setLoading(false)
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
@@ -64,6 +82,30 @@ export default function AuthModal({ onClose, onSuccess }) {
             <h2 className="text-xl font-bold text-text-primary mb-6">
               {mode === 'signin' ? 'Welcome back' : 'Get started with SoundGuy'}
             </h2>
+
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl border border-border-soft bg-surface-2 px-3.5 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? (
+                <Loader size={14} className="animate-spin" />
+              ) : (
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-white text-[10px] font-bold text-slate-900">
+                  G
+                </span>
+              )}
+              Continue with Google
+            </button>
+
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px flex-1 bg-border-soft" />
+              <span className="text-[11px] uppercase text-text-muted">
+                or
+              </span>
+              <span className="h-px flex-1 bg-border-soft" />
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

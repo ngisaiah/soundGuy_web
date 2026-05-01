@@ -45,7 +45,7 @@ export default function Hero() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-bold leading-[1.12] tracking-tight text-text-primary mb-5">
-              Stop walking back to your keyboard
+              Stop walking to your keyboard
               <br />
               <span className="text-accent">between takes.</span>
             </h1>
