@@ -14,6 +14,7 @@ import AuthCallback from './components/AuthCallback'
 import ResetPassword from './components/ResetPassword'
 import AuthModal from './components/AuthModal'
 import ResetPasswordModal from './components/ResetPasswordModal'
+import CheckoutSuccessModal from './components/CheckoutSuccessModal'
 
 function ResetPasswordGate() {
   const { pendingPasswordReset } = useAuth()
@@ -36,21 +37,23 @@ function ForgotPasswordGate() {
   return <AuthModal initialMode="forgot" onClose={() => setOpen(false)} onSuccess={() => setOpen(false)} />
 }
 
-// Handles ?checkout=success redirect from Stripe — refreshes license state
+// Handles ?checkout=success redirect from Stripe — refreshes license and shows download prompt
 function CheckoutSuccessHandler() {
   const { fetchLicense } = useAuth()
+  const [showModal, setShowModal] = useState(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('checkout') === 'success'
+  })
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('checkout') === 'success') {
-      // Remove the query param without a full page reload
+    if (showModal) {
       window.history.replaceState({}, '', window.location.pathname)
-      // Give the webhook a moment, then refresh
       setTimeout(fetchLicense, 1500)
     }
   }, [])
 
-  return null
+  if (!showModal) return null
+  return <CheckoutSuccessModal onClose={() => setShowModal(false)} />
 }
 
 export default function App() {
