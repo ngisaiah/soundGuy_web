@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
   const [authLoading, setAuthLoading] = useState(true)
   const [license, setLicense] = useState(null)
   const [licenseLoading, setLicenseLoading] = useState(false)
+  const [pendingPasswordReset, setPendingPasswordReset] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -15,8 +16,12 @@ export function AuthProvider({ children }) {
       setAuthLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        setPendingPasswordReset(true)
+      } else {
+        setUser(session?.user ?? null)
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -82,6 +87,8 @@ export function AuthProvider({ children }) {
       fetchLicense,
       startCheckout,
       signOut,
+      pendingPasswordReset,
+      setPendingPasswordReset,
     }}>
       {children}
     </AuthContext.Provider>

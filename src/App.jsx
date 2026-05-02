@@ -13,6 +13,13 @@ import { AuthProvider, useAuth } from './contexts/AuthContext'
 import AuthCallback from './components/AuthCallback'
 import ResetPassword from './components/ResetPassword'
 import AuthModal from './components/AuthModal'
+import ResetPasswordModal from './components/ResetPasswordModal'
+
+function ResetPasswordGate() {
+  const { pendingPasswordReset } = useAuth()
+  if (!pendingPasswordReset) return null
+  return <ResetPasswordModal />
+}
 
 // Opens the auth modal in forgot-password mode when ?auth=forgot is in the URL (deeplink from macOS app)
 function ForgotPasswordGate() {
@@ -69,6 +76,7 @@ export default function App() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Nav />
         <main>
+          <ResetPasswordGate />
           <ForgotPasswordGate />
           <CheckoutSuccessHandler />
           <Hero />
