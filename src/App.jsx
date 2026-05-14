@@ -7,6 +7,7 @@ import SetupSteps from './components/SetupSteps'
 import CommandsTable from './components/CommandsTable'
 import PricingSection from './components/PricingSection'
 import DownloadSection from './components/DownloadSection'
+import DemoVideo from './components/DemoVideo'
 import Footer from './components/Footer'
 import BackgroundCanvas from './components/BackgroundCanvas'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
@@ -83,6 +84,7 @@ export default function App() {
           <ForgotPasswordGate />
           <CheckoutSuccessHandler />
           <Hero />
+          <DemoVideo />
           <HowItWorks />
           <Features />
           <SetupSteps />
