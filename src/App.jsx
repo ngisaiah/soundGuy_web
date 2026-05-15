@@ -8,6 +8,7 @@ import CommandsTable from './components/CommandsTable'
 import PricingSection from './components/PricingSection'
 import DownloadSection from './components/DownloadSection'
 import DemoVideo from './components/DemoVideo'
+import ContactSection from './components/ContactSection'
 import Footer from './components/Footer'
 import BackgroundCanvas from './components/BackgroundCanvas'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
@@ -91,6 +92,7 @@ export default function App() {
           <CommandsTable />
           <PricingSection />
           <DownloadSection />
+          <ContactSection />
         </main>
         <Footer />
       </div>

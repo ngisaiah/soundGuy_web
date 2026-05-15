@@ -46,6 +46,10 @@ export default function DownloadSection() {
                 <ShieldCheck size={13} className="text-accent" />
                 Requires macOS 13 or later
               </span>
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck size={13} className="text-accent" />
+                7-day money-back guarantee
+              </span>
               {hasAccess && (
                 <span className="flex items-center gap-1.5">
                   <Check size={13} className="text-green-400" />

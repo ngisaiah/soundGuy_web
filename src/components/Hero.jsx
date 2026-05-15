@@ -1,9 +1,10 @@
-import { ArrowRight, Wifi, Lock, Apple } from 'lucide-react'
+import { ArrowRight, Wifi, Lock, Apple, RotateCcw } from 'lucide-react'
 
 const trustBadges = [
   { icon: Wifi,  label: 'Runs fully offline' },
   { icon: Lock,  label: 'No cloud processing' },
   { icon: Apple, label: 'Built for macOS' },
+  { icon: RotateCcw, label: '7-day money-back guarantee' },
 ]
 
 function CommandFlowCard() {
@@ -54,7 +55,7 @@ export default function Hero() {
               Record, stop, and redo takes in Logic Pro — without leaving the mic.
             </p>
             <p className="text-sm text-text-muted leading-relaxed mb-8 max-w-md">
-              Built for solo artists recording themselves.
+              Try it for 7 days. If it does not fit your workflow, request a refund.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">

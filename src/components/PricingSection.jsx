@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Check, Download, Loader, ShieldCheck, Zap, Mic, WifiOff, Keyboard } from 'lucide-react'
+import { Check, Download, Loader, ShieldCheck, Zap, Mic, WifiOff, Keyboard, RotateCcw } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import AuthModal from './AuthModal'
 import { DOWNLOAD_URL } from '../data/siteContent'
@@ -9,6 +9,7 @@ const includes = [
   { icon: Zap,      text: 'Wake-word detection ("SoundGuy")' },
   { icon: WifiOff,  text: 'Sub-second, fully offline recognition' },
   { icon: Keyboard, text: 'All built-in recording commands' },
+  { icon: RotateCcw, text: '7-day money-back guarantee' },
   { icon: Check,    text: 'No subscription — yours forever' },
 ]
 
@@ -74,7 +75,7 @@ export default function PricingSection() {
           <p className="section-label mb-3">Pricing</p>
           <h2 className="section-heading">Pay once. Record hands-free forever.</h2>
           <p className="mt-3 text-text-secondary text-base max-w-sm mx-auto leading-relaxed">
-            One purchase. No subscription. Built for solo artists who want to stay in the flow.
+            One purchase. No subscription. Try SoundGuy for 7 days and request a refund if it is not right for you.
           </p>
         </div>
 
@@ -93,6 +94,10 @@ export default function PricingSection() {
                 <span className="pb-1 text-sm text-text-muted">one-time</span>
               </div>
               <p className="text-sm text-text-secondary mb-6">SoundGuy for macOS</p>
+              <div className="mb-5 flex items-start gap-2 rounded-xl border border-green-500/25 bg-green-500/10 px-3.5 py-3 text-sm text-green-300">
+                <RotateCcw size={15} className="mt-0.5 shrink-0" />
+                <span>Try it for 7 days. If SoundGuy does not fit your workflow, request a refund.</span>
+              </div>
 
               <ul className="space-y-3 mb-8">
                 {includes.map(({ icon: Icon, text }) => (

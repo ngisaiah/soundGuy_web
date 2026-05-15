@@ -1,5 +1,17 @@
 // To swap in the real DMG download URL, update DOWNLOAD_URL below.
 export const DOWNLOAD_URL = 'https://github.com/ngisaiah/soundGuy/releases/download/V1.1.6/SoundGuy.dmg'
+export const SUPPORT_EMAIL = 'support@sound-guy.io'
+
+export const contactSubjects = [
+  'Request a refund',
+  'Installation or setup help',
+  'Microphone or accessibility permissions',
+  'License or download issue',
+  'Bug report',
+  'Feature request',
+  'Billing question',
+  'General question',
+]
 
 export const steps = [
   {

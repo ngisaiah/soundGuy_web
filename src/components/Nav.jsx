@@ -8,6 +8,7 @@ const links = [
   { label: 'Setup',        href: '#setup' },
   { label: 'Commands',     href: '#commands' },
   { label: 'Pricing',      href: '#pricing' },
+  { label: 'Contact',      href: '#contact' },
 ]
 
 export default function Nav() {

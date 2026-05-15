@@ -5,6 +5,9 @@ export default function Footer() {
         <span>© 2026 SoundGuy</span>
         <div className="flex items-center gap-3">
           <span>Built for solo artists recording themselves.</span>
+          <a href="#contact" className="hover:text-white transition-colors">
+            Contact
+          </a>
           <a
             href="https://www.youtube.com/@Soundguyio"
             target="_blank"
