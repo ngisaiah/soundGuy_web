@@ -1,4 +1,5 @@
 import { ArrowRight, Wifi, Lock, Apple, RotateCcw } from 'lucide-react'
+import { usePostHog } from '@posthog/react'
 
 const trustBadges = [
   { icon: Wifi,  label: 'Runs fully offline' },
@@ -33,6 +34,8 @@ function CommandFlowCard() {
 }
 
 export default function Hero() {
+  const posthog = usePostHog()
+
   return (
     <section className="relative pt-32 pb-24 overflow-hidden">
       <div className="container-site">
@@ -59,10 +62,10 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-3 mb-10">
-              <a href="#pricing" className="btn-primary">
+              <a href="#pricing" className="btn-primary" onClick={() => posthog?.capture('hero_cta_clicked')}>
                 Get SoundGuy — $19.99
               </a>
-              <a href="#setup" className="btn-secondary">
+              <a href="#setup" className="btn-secondary" onClick={() => posthog?.capture('hero_setup_clicked')}>
                 View setup
                 <ArrowRight size={15} />
               </a>

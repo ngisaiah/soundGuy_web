@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Download, LogOut, User } from 'lucide-react'
+import { usePostHog } from '@posthog/react'
 import { useAuth } from '../contexts/AuthContext'
 import AuthModal from './AuthModal'
 
@@ -12,6 +13,7 @@ const links = [
 ]
 
 export default function Nav() {
+  const posthog = usePostHog()
   const { user, authLoading, signOut } = useAuth()
   const [showAuth, setShowAuth] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
@@ -46,7 +48,7 @@ export default function Nav() {
           <div className="flex items-center gap-2">
             {!authLoading && !user && (
               <button
-                onClick={() => setShowAuth(true)}
+                onClick={() => { posthog?.capture('nav_signin_clicked'); setShowAuth(true) }}
                 className="btn-secondary py-2 text-xs"
               >
                 Sign in
@@ -84,7 +86,7 @@ export default function Nav() {
               </div>
             )}
 
-            <a href="#pricing" className="btn-primary py-2 text-xs">
+            <a href="#pricing" className="btn-primary py-2 text-xs" onClick={() => posthog?.capture('nav_get_soundguy_clicked')}>
               <Download size={14} />
               Get SoundGuy
             </a>

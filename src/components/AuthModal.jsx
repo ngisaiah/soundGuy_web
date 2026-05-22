@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { usePostHog } from '@posthog/react'
 import { X, Loader } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }) {
+  const posthog = usePostHog()
   const [mode, setMode] = useState(initialMode) // 'signin' | 'signup' | 'forgot'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,20 +16,33 @@ export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }
     e.preventDefault()
     setError(null)
     setLoading(true)
+    posthog?.capture(mode === 'signup' ? 'signup_submitted' : 'signin_submitted', {
+      method: 'email',
+    })
 
     try {
       if (mode === 'signup') {
         const { error } = await supabase.auth.signUp({ email, password })
         if (error) throw error
         setCheckEmail(true)
+        posthog?.capture('signup_confirmation_sent', {
+          method: 'email',
+        })
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
+        posthog?.capture('signin_succeeded', {
+          method: 'email',
+        })
         onSuccess?.()
         onClose()
       }
     } catch (err) {
       setError(err.message)
+      posthog?.capture(mode === 'signup' ? 'signup_failed' : 'signin_failed', {
+        method: 'email',
+        message: err.message,
+      })
     } finally {
       setLoading(false)
     }
@@ -37,14 +52,19 @@ export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }
     e.preventDefault()
     setError(null)
     setLoading(true)
+    posthog?.capture('password_reset_requested')
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/reset-password`,
       })
       if (error) throw error
       setCheckEmail(true)
+      posthog?.capture('password_reset_email_sent')
     } catch (err) {
       setError(err.message)
+      posthog?.capture('password_reset_failed', {
+        message: err.message,
+      })
     } finally {
       setLoading(false)
     }
@@ -53,6 +73,9 @@ export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }
   async function handleGoogleSignIn() {
     setError(null)
     setLoading(true)
+    posthog?.capture('signin_submitted', {
+      method: 'google',
+    })
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -64,6 +87,10 @@ export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }
       if (error) throw error
     } catch (err) {
       setError(err.message)
+      posthog?.capture('signin_failed', {
+        method: 'google',
+        message: err.message,
+      })
       setLoading(false)
     }
   }
@@ -192,7 +219,7 @@ export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }
                   {mode === 'signin' && (
                     <button
                       type="button"
-                      onClick={() => { setMode('forgot'); setError(null) }}
+                      onClick={() => { posthog?.capture('forgot_password_clicked'); setMode('forgot'); setError(null) }}
                       className="text-xs text-text-muted hover:text-accent transition-colors"
                     >
                       Forgot password?
@@ -229,7 +256,12 @@ export default function AuthModal({ onClose, onSuccess, initialMode = 'signin' }
             <p className="mt-5 text-center text-xs text-text-muted">
               {mode === 'signin' ? "Don't have an account?" : 'Already have an account?'}{' '}
               <button
-                onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(null) }}
+                onClick={() => {
+                  const nextMode = mode === 'signin' ? 'signup' : 'signin'
+                  posthog?.capture('auth_mode_switched', { mode: nextMode })
+                  setMode(nextMode)
+                  setError(null)
+                }}
                 className="text-accent underline-offset-2 hover:underline"
               >
                 {mode === 'signin' ? 'Sign up' : 'Sign in'}

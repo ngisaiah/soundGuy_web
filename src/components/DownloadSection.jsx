@@ -1,8 +1,10 @@
+import { usePostHog } from '@posthog/react'
 import { Download, ShieldCheck, Check } from 'lucide-react'
 import { DOWNLOAD_URL } from '../data/siteContent'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function DownloadSection() {
+  const posthog = usePostHog()
   const { license } = useAuth()
   const hasAccess = license?.has_access === true
 
@@ -27,12 +29,20 @@ export default function DownloadSection() {
             </p>
 
             {hasAccess ? (
-              <a href={DOWNLOAD_URL} className="btn-primary text-base px-8 py-3.5">
+              <a
+                href={DOWNLOAD_URL}
+                onClick={() => posthog?.capture('download_clicked', { source: 'download_section' })}
+                className="btn-primary text-base px-8 py-3.5"
+              >
                 <Download size={18} />
                 Download for macOS
               </a>
             ) : (
-              <a href="#pricing" className="btn-primary text-base px-8 py-3.5">
+              <a
+                href="#pricing"
+                onClick={() => posthog?.capture('pricing_cta_clicked', { source: 'download_section' })}
+                className="btn-primary text-base px-8 py-3.5"
+              >
                 Get SoundGuy — $19.99
               </a>
             )}

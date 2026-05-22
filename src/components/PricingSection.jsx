@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { usePostHog } from '@posthog/react'
 import { Check, Download, Loader, ShieldCheck, Zap, Mic, WifiOff, Keyboard, RotateCcw } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import AuthModal from './AuthModal'
@@ -14,6 +15,7 @@ const includes = [
 ]
 
 export default function PricingSection() {
+  const posthog = usePostHog()
   const { user, license, licenseLoading, startCheckout, authLoading } = useAuth()
   const [showAuth, setShowAuth] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
@@ -23,6 +25,7 @@ export default function PricingSection() {
 
   async function handleBuy() {
     if (!user) {
+      posthog?.capture('purchase_auth_required')
       setShowAuth(true)
       return
     }
@@ -31,6 +34,9 @@ export default function PricingSection() {
     try {
       await startCheckout()
     } catch (err) {
+      posthog?.capture('checkout_error_shown', {
+        message: err.message,
+      })
       setCheckoutError(err.message)
       setCheckoutLoading(false)
     }
@@ -48,7 +54,11 @@ export default function PricingSection() {
 
     if (hasAccess) {
       return (
-        <a href={DOWNLOAD_URL} className="btn-primary w-full justify-center py-3">
+        <a
+          href={DOWNLOAD_URL}
+          onClick={() => posthog?.capture('download_clicked', { source: 'pricing' })}
+          className="btn-primary w-full justify-center py-3"
+        >
           <Download size={15} />
           Download SoundGuy
         </a>
@@ -145,6 +155,7 @@ export default function PricingSection() {
           onClose={() => setShowAuth(false)}
           onSuccess={() => {
             setShowAuth(false)
+            posthog?.capture('purchase_auth_completed')
             // after sign-in, re-trigger checkout automatically
             handleBuy()
           }}

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { usePostHog } from '@posthog/react'
 import { Loader, Mail, Send } from 'lucide-react'
 import { contactSubjects, SUPPORT_EMAIL } from '../data/siteContent'
 
@@ -10,6 +11,7 @@ const initialForm = {
 }
 
 export default function ContactSection() {
+  const posthog = usePostHog()
   const [form, setForm] = useState(initialForm)
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
@@ -24,6 +26,9 @@ export default function ContactSection() {
     event.preventDefault()
     setStatus('sending')
     setError('')
+    posthog?.capture('contact_form_submitted', {
+      subject: form.subject,
+    })
 
     try {
       const response = await fetch('/api/contact', {
@@ -39,9 +44,16 @@ export default function ContactSection() {
 
       setForm(initialForm)
       setStatus('sent')
+      posthog?.capture('contact_form_sent', {
+        subject: form.subject,
+      })
     } catch (err) {
       setError(err.message || 'Could not send your message')
       setStatus('error')
+      posthog?.capture('contact_form_failed', {
+        subject: form.subject,
+        message: err.message || 'Could not send your message',
+      })
     }
   }
 
@@ -57,6 +69,7 @@ export default function ContactSection() {
             </p>
             <a
               href={`mailto:${SUPPORT_EMAIL}`}
+              onClick={() => posthog?.capture('support_email_clicked')}
               className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-white"
             >
               <Mail size={15} />

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { X, Loader } from 'lucide-react'
+import { usePostHog } from '@posthog/react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function ResetPasswordModal() {
+  const posthog = usePostHog()
   const { setPendingPasswordReset } = useAuth()
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -22,9 +24,11 @@ export default function ResetPasswordModal() {
     try {
       const { error } = await supabase.auth.updateUser({ password })
       if (error) throw error
+      posthog?.capture('password_update_succeeded')
       setDone(true)
     } catch (err) {
       setError(err.message)
+      posthog?.capture('password_update_failed', { message: err.message })
     } finally {
       setLoading(false)
     }

@@ -1,7 +1,10 @@
+import { usePostHog } from '@posthog/react'
 import { Download, Check } from 'lucide-react'
 import { DOWNLOAD_URL } from '../data/siteContent'
 
 export default function CheckoutSuccessModal({ onClose }) {
+  const posthog = usePostHog()
+
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
@@ -20,7 +23,10 @@ export default function CheckoutSuccessModal({ onClose }) {
 
         <a
           href={DOWNLOAD_URL}
-          onClick={onClose}
+          onClick={() => {
+            posthog?.capture('download_clicked', { source: 'checkout_success_modal' })
+            onClose()
+          }}
           className="btn-primary w-full justify-center py-3 mb-3"
         >
           <Download size={15} />

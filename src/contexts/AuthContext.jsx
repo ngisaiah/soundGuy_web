@@ -1,9 +1,12 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { usePostHog } from '@posthog/react'
 import { supabase } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
+  const posthog = usePostHog()
+  const previousUserId = useRef(null)
   const [user, setUser] = useState(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [license, setLicense] = useState(null)
@@ -27,15 +30,7 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => {
-    if (user) {
-      fetchLicense()
-    } else {
-      setLicense(null)
-    }
-  }, [user])
-
-  async function fetchLicense() {
+  const fetchLicense = useCallback(async function fetchLicense() {
     setLicenseLoading(true)
     try {
       const { data: { session } } = await supabase.auth.getSession()
@@ -51,11 +46,29 @@ export function AuthProvider({ children }) {
     } finally {
       setLicenseLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      previousUserId.current = user.id
+      posthog?.identify(user.id, {
+        email: user.email,
+      })
+      fetchLicense()
+    } else {
+      if (previousUserId.current) {
+        posthog?.reset()
+        previousUserId.current = null
+      }
+      setLicense(null)
+    }
+  }, [user, fetchLicense, posthog])
 
   async function startCheckout() {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) throw new Error('Not authenticated')
+
+    posthog?.capture('checkout_started')
 
     const res = await fetch('/api/checkout', {
       method: 'POST',
@@ -66,14 +79,20 @@ export function AuthProvider({ children }) {
     })
     if (!res.ok) {
       const body = await res.json().catch(() => ({}))
+      posthog?.capture('checkout_failed', {
+        reason: body.error || 'Failed to create checkout session',
+      })
       throw new Error(body.error || 'Failed to create checkout session')
     }
     const { url } = await res.json()
+    posthog?.capture('checkout_redirected')
     window.location.href = url
   }
 
   async function signOut() {
+    posthog?.capture('signed_out')
     await supabase.auth.signOut()
+    posthog?.reset()
     setUser(null)
     setLicense(null)
   }

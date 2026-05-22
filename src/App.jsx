@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { usePostHog } from '@posthog/react'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import HowItWorks from './components/HowItWorks'
@@ -26,14 +27,20 @@ function ResetPasswordGate() {
 
 // Opens the auth modal in forgot-password mode when ?auth=forgot is in the URL (deeplink from macOS app)
 function ForgotPasswordGate() {
+  const posthog = usePostHog()
+  const didHandleForgotPassword = useRef(false)
   const [open, setOpen] = useState(() => {
     const params = new URLSearchParams(window.location.search)
     return params.get('auth') === 'forgot'
   })
 
   useEffect(() => {
-    if (open) window.history.replaceState({}, '', window.location.pathname)
-  }, [])
+    if (open && !didHandleForgotPassword.current) {
+      didHandleForgotPassword.current = true
+      posthog?.capture('forgot_password_deeplink_opened')
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+  }, [open, posthog])
 
   if (!open) return null
   return <AuthModal initialMode="forgot" onClose={() => setOpen(false)} onSuccess={() => setOpen(false)} />
@@ -41,18 +48,22 @@ function ForgotPasswordGate() {
 
 // Handles ?checkout=success redirect from Stripe — refreshes license and shows download prompt
 function CheckoutSuccessHandler() {
+  const posthog = usePostHog()
   const { fetchLicense } = useAuth()
+  const didHandleCheckoutSuccess = useRef(false)
   const [showModal, setShowModal] = useState(() => {
     const params = new URLSearchParams(window.location.search)
     return params.get('checkout') === 'success'
   })
 
   useEffect(() => {
-    if (showModal) {
+    if (showModal && !didHandleCheckoutSuccess.current) {
+      didHandleCheckoutSuccess.current = true
+      posthog?.capture('checkout_success')
       window.history.replaceState({}, '', window.location.pathname)
       setTimeout(fetchLicense, 1500)
     }
-  }, [])
+  }, [showModal, fetchLicense, posthog])
 
   if (!showModal) return null
   return <CheckoutSuccessModal onClose={() => setShowModal(false)} />
